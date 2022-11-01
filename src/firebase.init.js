@@ -17,7 +17,7 @@ const firebaseConfig = {
   projectId: "ema-john-react-site",
   storageBucket: "ema-john-react-site.appspot.com",
   messagingSenderId: "817700730149",
-  appId: "1:817700730149:web:e170a834430d67eeea56cc"
+  appId: "1:817700730149:web:e170a834430d67eeea56cc",
 };
 
 // Initialize Firebase
