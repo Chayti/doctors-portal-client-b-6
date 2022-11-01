@@ -5,11 +5,13 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import Loading from '../Shared/Loading';
 import CheckoutForm from './CheckoutForm';
+import { useLoaderData } from "react-router-dom";
 
 const stripePromise = loadStripe('pk_test_51KzgdMJVa6zVY99CaGts94G8qqJirQWPMAET7VBqrec0wWSxhuuRtgQNPA3SuwzjQKOv6QWwjgMWEfZ83N1qLNUU00IX1ciL6e');
 
 const Payment = () => {
-    const { id } = useParams();
+    // const { id } = useParams();
+    const id = useLoaderData()
     const url = `https://secret-dusk-46242.herokuapp.com/booking/${id}`;
 
     const { data: appointment, isLoading } = useQuery(['booking', id], () => fetch(url, {

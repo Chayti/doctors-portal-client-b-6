@@ -65,7 +65,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/dashboard/payment/:id",
-        // loader: ({ params }) => fetch(`http://localhost:5000/service/${params.id}),
+        loader: ({ params }) => fetch(`https://secret-dusk-46242.herokuapp.com/booking/${params.id}`),
         element: <Payment />
       },
       {
