@@ -35,51 +35,72 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/appointment",
-        element: <RequireAuth><Appointment /></RequireAuth>,
+        element: (
+          <RequireAuth>
+            <Appointment />
+          </RequireAuth>
+        ),
       },
       {
         path: "/login",
-        element: <Login />
+        element: <Login />,
       },
       {
         path: "/signup",
-        element: <SignUp />
+        element: <SignUp />,
       },
     ],
   },
   {
     path: "/",
-    element: <RequireAuth><DashboardLayout></DashboardLayout></RequireAuth>,
+    element: (
+      <RequireAuth>
+        <DashboardLayout></DashboardLayout>
+      </RequireAuth>
+    ),
     children: [
       {
         path: "/dashboard",
-        element: <MyAppointments />
+        element: <MyAppointments />,
       },
       {
         path: "/dashboard/review",
-        element: <MyReview />
+        element: <MyReview />,
       },
       {
         path: "/dashboard/history",
-        element: <MyHistory />
+        element: <MyHistory />,
       },
       {
         path: "/dashboard/payment/:id",
-        loader: ({ params }) => fetch(`https://secret-dusk-46242.herokuapp.com/booking/${params.id}`),
-        element: <Payment />
+        loader: ({ params }) =>
+          fetch(`https://secret-dusk-46242.herokuapp.com/booking/${params.id}`),
+        element: <Payment />,
       },
       {
         path: "/dashboard/users",
-        element: <RequireAdmin><Users /></RequireAdmin>
+        element: (
+          <RequireAdmin>
+            <Users />
+          </RequireAdmin>
+        ),
       },
       {
         path: "/dashboard/addDoctor",
-        element: <RequireAdmin><AddDoctor /></RequireAdmin>
+        element: (
+          <RequireAdmin>
+            <AddDoctor />
+          </RequireAdmin>
+        ),
       },
       {
         path: "/dashboard/manageDoctor",
-        element: <RequireAdmin><ManageDoctors /></RequireAdmin>
+        element: (
+          <RequireAdmin>
+            <ManageDoctors />
+          </RequireAdmin>
+        ),
       },
-    ]
+    ],
   },
 ]);

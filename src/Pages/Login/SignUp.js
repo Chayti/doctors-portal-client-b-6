@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Loading from "../Shared/Loading";
-import { Link, useNavigate } from "react-router-dom";
-import useToken from "../../hooks/useToken";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
+import useToken from "../../hooks/useToken";
 
 const SignUp = () => {
   const { signInWithGoogle, loading, registerUser, user, authError } =
@@ -14,12 +14,14 @@ const SignUp = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-
-  const [token] = useToken(user);
-
+  console.log(user);
   const navigate = useNavigate();
-
+  const token = useToken(user);
   let signInError;
+
+  if (token) {
+    navigate("/appointment");
+  }
 
   if (loading) {
     return <Loading></Loading>;
@@ -33,15 +35,12 @@ const SignUp = () => {
     );
   }
 
-  if (token) {
-    navigate("/appointment");
-  }
-
   const onSubmit = async (data) => {
-    await registerUser(data.email, data.password);
+    await registerUser(data.email, data.password, data.name);
 
     console.log("update done");
   };
+
   return (
     <div className="flex h-screen justify-center items-center">
       <div className="card w-96 bg-base-100 shadow-xl">

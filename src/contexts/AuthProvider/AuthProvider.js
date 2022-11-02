@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
 
   const googleProvider = new GoogleAuthProvider();
 
-  const registerUser = (email, password, name, navigate) => {
+  const registerUser = (email, password, name) => {
     setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -39,7 +39,6 @@ const AuthProvider = ({ children }) => {
         })
           .then(() => {})
           .catch((error) => {});
-        navigate("/");
       })
       .catch((error) => {
         setAuthError(error.message);

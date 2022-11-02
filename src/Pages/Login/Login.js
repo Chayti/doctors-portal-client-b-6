@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import Loading from "../Shared/Loading";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -8,23 +8,22 @@ import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 const Login = () => {
   const { signInWithGoogle, user, loginUser, loading, authError } =
     useContext(AuthContext);
+  const token = useToken(user);
+  console.log(token);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [token] = useToken(user);
 
   let signInError;
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname || "/";
 
-  useEffect(() => {
-    if (token) {
-      navigate(from, { replace: true });
-    }
-  }, [token, from, navigate]);
+  if (token) {
+    navigate(from, { replace: true });
+  }
 
   if (loading) {
     return <Loading></Loading>;
