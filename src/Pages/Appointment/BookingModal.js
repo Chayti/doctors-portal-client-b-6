@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { format } from 'date-fns';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import auth from '../../firebase.init';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../contexts/AuthProvider';
 
 const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
     const { _id, name, slots, price } = treatment;
-    const [user, loading, error] = useAuthState(auth);
+    const {user, loading, error} = useContext(AuthContext);
     const formattedDate = format(date, 'PP');
     const handleBooking = event => {
         event.preventDefault();
@@ -23,7 +22,7 @@ const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
             phone: event.target.phone.value
         }
 
-        fetch('https://secret-dusk-46242.herokuapp.com/booking', {
+        fetch('http://localhost:5000/booking', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

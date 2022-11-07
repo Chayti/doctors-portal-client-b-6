@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import auth from '../../firebase.init';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
+import { AuthContext } from '../../contexts/AuthProvider';
 
 const MyAppointments = () => {
 
     const [appointments, setAppointments] = useState([]);
-    const [user] = useAuthState(auth);
+    const {user, logOut} = useContext(AuthContext);
     const navigate = useNavigate()
 
     useEffect(() => {
         if (user) {
-            fetch(`https://secret-dusk-46242.herokuapp.com/booking?patient=${user.email}`, {
+            fetch(`http://localhost:5000/booking?patient=${user.email}`, {
                 method: 'GET',
                 headers: {
                     'authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -21,7 +19,7 @@ const MyAppointments = () => {
                 .then(res => {
                     console.log('res', res);
                     if (res.status === 401 || res.status === 403) {
-                        signOut(auth);
+                        logOut();
                         localStorage.removeItem('accessToken');
                         navigate('/');
                     }

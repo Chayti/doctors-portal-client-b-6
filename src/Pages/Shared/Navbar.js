@@ -1,15 +1,14 @@
-import { signOut } from 'firebase/auth';
-import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import auth from '../../firebase.init';
+import { AuthContext } from '../../contexts/AuthProvider';
 
 const Navbar = () => {
 
-    const [user] = useAuthState(auth);
+    const {user, logOut} = useContext(AuthContext);
 
     const logout = () => {
-        signOut(auth);
+        logOut();
         localStorage.removeItem('accessToken');
     };
 

@@ -1,44 +1,53 @@
-import React, { useEffect } from 'react';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
-import auth from '../../firebase.init';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import Loading from '../Shared/Loading';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
+import { AuthContext } from '../../contexts/AuthProvider';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const Login = () => {
-    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const {providerLogin, user, loading,setLoading,signIn } = useContext(AuthContext);
+    const [newUser, setNewUser] = useState({})
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [
-        signInWithEmailAndPassword,
-        user,
-        loading,
-        error,
-    ] = useSignInWithEmailAndPassword(auth);
+    const googleProvider = new GoogleAuthProvider();
 
-    const [token] = useToken(user || gUser);
-
+    // const [token, setToken]= useState("");
+    const [token]= useToken(newUser);
+    
     let signInError;
     const navigate = useNavigate();
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
-
+    
     useEffect( () =>{
         if (token) {
             navigate(from, { replace: true });
         }
     }, [token, from, navigate])
 
-    if (loading || gLoading) {
+    if (loading) {
         return <Loading></Loading>
     }
 
-    if(error || gError){
-        signInError= <p className='text-red-500'><small>{error?.message || gError?.message }</small></p>
-    }
+
+    const handleProviderAuth = () => {
+        providerLogin(googleProvider)
+          .then((result) => {
+            console.log("user", result?.user);
+            
+            setNewUser(result?.user);
+          })
+          .catch((err) => {
+            console.log(err?.message);
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      };
 
     const onSubmit = data => {
-        signInWithEmailAndPassword(data.email, data.password);
+        signIn(data.email, data.password);
     }
 
     return (
@@ -103,7 +112,7 @@ const Login = () => {
                     <p><small>New to Doctors Portal <Link className='text-primary' to="/signup">Create New Account</Link></small></p>
                     <div className="divider">OR</div>
                     <button
-                        onClick={() => signInWithGoogle()}
+                        onClick={() => handleProviderAuth()}
                         className="btn btn-outline"
                     >Continue with Google</button>
                 </div>
