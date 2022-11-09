@@ -37,9 +37,9 @@ export const routes = createBrowserRouter([
       {
         path: "/appointment",
         element: (
-          
+          <RequireAuth>
             <Appointment />
-          
+          </RequireAuth>
         ),
       },
       {
